@@ -8,7 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using PhoneBook.DAL;
 using PhoneBook.Filters;
+using PhoneBook.Mappers;
 using PhoneBook.Models;
+using PhoneBook.ViewModels;
 using WebMatrix.WebData;
 
 namespace PhoneBook.Controllers
@@ -18,7 +20,8 @@ namespace PhoneBook.Controllers
     public class ContactController : Controller
     {
         private PhoneBookContext db = new PhoneBookContext();
-
+        private IMapToNew<Contact, ContactViewModel> contactViewModelMapper = new ContactViewModelMapper();
+        private IMapToExisting<Contact, ContactViewModel> contactMapper = new ContactMapper();
         //
         // GET: /Contact/
 
@@ -42,7 +45,8 @@ namespace PhoneBook.Controllers
             {
                 return HttpNotFound();
             }
-            return View(contact);
+            ContactViewModel contactViewModel = contactViewModelMapper.Map(contact);
+            return View(contactViewModel);
         }
 
         //
@@ -87,7 +91,9 @@ namespace PhoneBook.Controllers
             {
                 return HttpNotFound();
             }
-            return View(contact);
+
+            ContactViewModel contactViewModel= contactViewModelMapper.Map(contact);
+            return View(contactViewModel);
         }
 
         //
@@ -95,15 +101,18 @@ namespace PhoneBook.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Contact contact)
+        public ActionResult Edit(ContactViewModel contactViewModel)
         {
             if (ModelState.IsValid)
             {
+                Contact contact = db.Contacts.Find(contactViewModel.ID);
+                contactMapper.Map(contact, contactViewModel);
+
                 db.Entry(contact).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(contact);
+            return View(contactViewModel);
         }
 
         //

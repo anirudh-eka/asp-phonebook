@@ -32,6 +32,7 @@ namespace PhoneBook.Filters
                 {
                     using (var context = new PhoneBookContext())
                     {
+                  
                         if (!context.Database.Exists())
                         {
                             // Create the SimpleMembership database without Entity Framework migration schema
