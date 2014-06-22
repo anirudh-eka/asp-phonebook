@@ -55,7 +55,7 @@ namespace PhoneBook.Controllers
         {
             WebSecurity.Logout();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Contact");
         }
 
         //
@@ -82,7 +82,7 @@ namespace PhoneBook.Controllers
                 {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Contact");
                 }
                 catch (MembershipCreateUserException e)
                 {
