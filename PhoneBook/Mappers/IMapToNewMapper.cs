@@ -9,5 +9,7 @@ namespace PhoneBook.Mappers
     public interface IMapToNew<TSource, TTarget>
     {
         TTarget Map(TSource source);
+
+        List<TTarget> MapList(List<TSource> sources);
     }
 }
