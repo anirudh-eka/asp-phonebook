@@ -27,11 +27,17 @@ namespace PhoneBook.Controllers
 
         public ActionResult Index()
         {
-            var contacts = from contact in db.Contacts select contact;
+            IQueryable<Contact> contacts = from contact in db.Contacts select contact;
             
             int CurrentUserId = WebSecurity.GetUserId(User.Identity.Name);
             contacts = contacts.Where(c => c.Owner.UserId == CurrentUserId);
-            return View(contacts);
+
+            List<ContactViewModel> contactViewModels = new List<ContactViewModel>();
+            foreach (Contact contact in contacts)
+            {
+                contactViewModels.Add(contactViewModelMapper.Map(contact));
+            }
+            return View(contactViewModels);
         }
 
         //

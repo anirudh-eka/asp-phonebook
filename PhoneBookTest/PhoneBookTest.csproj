@@ -57,11 +57,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Feature\HomePage.cs" />
-    <Compile Include="Feature\Host.cs" />
-    <Compile Include="Feature\LoginPanel.cs" />
-    <Compile Include="Feature\RegistrationTest.cs" />
+    <Compile Include="UI\HomePage.cs" />
+    <Compile Include="UI\Host.cs" />
+    <Compile Include="UI\LoginPanel.cs" />
+    <Compile Include="UI\RegistrationTest.cs" />
     <Compile Include="Mappers\ContactMapperTest.cs" />
     <Compile Include="Mappers\ContactViewModelMapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
