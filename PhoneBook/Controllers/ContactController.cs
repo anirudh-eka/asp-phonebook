@@ -47,7 +47,7 @@ namespace PhoneBook.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            Contact contact = db.Contacts.Find(id);
+            Contact contact = contactQuerier.GetContactById(id);
             int CurrentUserId = WebSecurity.GetUserId(User.Identity.Name);
             if (contact == null || (contact.Owner.UserId != CurrentUserId))
             {
@@ -70,23 +70,22 @@ namespace PhoneBook.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Contact contact)
+        public ActionResult Create(ContactViewModel contactViewModel)
         {
             if (ModelState.IsValid)
             {
                 int CurrentUserId = WebSecurity.GetUserId(User.Identity.Name);
                 UserProfile owner = db.UserProfiles.Find(CurrentUserId);
-
-                if (owner != null)
-                {
-                    contact.Owner = owner;
+                
+                Contact contact = new Contact();
+                contactMapper.Map(contact, contactViewModel, owner);
                     db.Contacts.Add(contact);
                     db.SaveChanges();
-                }
+
                 return RedirectToAction("Index");
             }
 
-            return View(contact);
+            return View(contactViewModel);
         }
 
         //

@@ -24,5 +24,10 @@ namespace PhoneBook.Queriers
             IQueryable<Contact> contacts = GetContacts();
             return contacts.Where(c => c.Owner.UserId == userId);
         }
+
+        public Contact GetContactById(int id)
+        {
+            return db.Contacts.Find(id);
+        }
     }
 }
