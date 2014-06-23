@@ -10,6 +10,7 @@ using PhoneBook.DAL;
 using PhoneBook.Filters;
 using PhoneBook.Mappers;
 using PhoneBook.Models;
+using PhoneBook.Queriers;
 using PhoneBook.ViewModels;
 using WebMatrix.WebData;
 
@@ -22,21 +23,22 @@ namespace PhoneBook.Controllers
         private PhoneBookContext db = new PhoneBookContext();
         private IMapToNew<Contact, ContactViewModel> contactViewModelMapper = new ContactViewModelMapper();
         private IMapToExisting<Contact, ContactViewModel> contactMapper = new ContactMapper();
+        private ContactQuerier contactQuerier;
+
+        public ContactController()
+        {
+            contactQuerier = new ContactQuerier(db);
+        }
         //
         // GET: /Contact/
 
         public ActionResult Index()
         {
-            IQueryable<Contact> contacts = from contact in db.Contacts select contact;
-            
-            int CurrentUserId = WebSecurity.GetUserId(User.Identity.Name);
-            contacts = contacts.Where(c => c.Owner.UserId == CurrentUserId);
+            int currentUserId = WebSecurity.GetUserId(User.Identity.Name);
+            IQueryable<Contact> contacts = contactQuerier.GetContactsFor(currentUserId);
 
-            List<ContactViewModel> contactViewModels = new List<ContactViewModel>();
-            foreach (Contact contact in contacts)
-            {
-                contactViewModels.Add(contactViewModelMapper.Map(contact));
-            }
+            List<ContactViewModel> contactViewModels = contactViewModelMapper.MapList(contacts.ToList());
+            
             return View(contactViewModels);
         }
 
@@ -45,7 +47,7 @@ namespace PhoneBook.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            Contact contact = db.Contacts.Find(id);
+            Contact contact = contactQuerier.GetContactById(id);
             int CurrentUserId = WebSecurity.GetUserId(User.Identity.Name);
             if (contact == null || (contact.Owner.UserId != CurrentUserId))
             {
@@ -68,23 +70,22 @@ namespace PhoneBook.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Contact contact)
+        public ActionResult Create(ContactViewModel contactViewModel)
         {
             if (ModelState.IsValid)
             {
                 int CurrentUserId = WebSecurity.GetUserId(User.Identity.Name);
                 UserProfile owner = db.UserProfiles.Find(CurrentUserId);
-
-                if (owner != null)
-                {
-                    contact.Owner = owner;
+                
+                Contact contact = new Contact();
+                contactMapper.Map(contact, contactViewModel, owner);
                     db.Contacts.Add(contact);
                     db.SaveChanges();
-                }
+
                 return RedirectToAction("Index");
             }
 
-            return View(contact);
+            return View(contactViewModel);
         }
 
         //
