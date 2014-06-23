@@ -1,0 +1,27 @@
+﻿@using System.Web.UI.WebControls
+@{
+    ViewBag.Title = "About";
+
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.newTitle</h1>
+</hgroup>
+
+<article>
+    <p>
+        Connecting you to the people you love!
+    </p>
+
+    <p>
+        Brought to you by Cameron & Anirudh
+    </p>
+</article>
+
+<aside>
+    <h3>We really care...</h3>
+    <ul>
+        <li>@Html.ActionLink("Home", "Index", "Contact")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+    </ul>
+</aside>

@@ -1,0 +1,6 @@
+PhoneBook/bin/*
+PhoneBook/App_Data/Phonebook.mdf
+PhoneBook/App_Data/Phonebook_log.ldf
+PhoneBook/obj/*
+PhoneBookTest/bin/*
+PhoneBookTest/obj/*
