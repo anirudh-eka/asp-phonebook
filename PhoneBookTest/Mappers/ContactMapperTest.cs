@@ -13,7 +13,7 @@ namespace PhoneBookTest.Mappers
     class ContactMapperTest
     {
         [Test]
-        public void shouldMapChangesFromViewModelToModel()
+        public void ShouldMapChangesFromViewModelToModel()
         {
             ContactMapper contactMapper = new ContactMapper();
 
@@ -34,7 +34,7 @@ namespace PhoneBookTest.Mappers
         }
 
         [Test]
-        public void shouldMapChangesFromViewModelWithOwnerToModel()
+        public void ShouldMapChangesFromViewModelWithOwnerToModel()
         {
             ContactMapper contactMapper = new ContactMapper();
 

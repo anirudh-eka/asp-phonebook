@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mappers\ContactListMapperTest.cs" />
     <Compile Include="UI\HomePage.cs" />
     <Compile Include="UI\Host.cs" />
     <Compile Include="UI\LoginPanel.cs" />

@@ -18,16 +18,5 @@ namespace PhoneBook.Mappers
 
             return contactViewModel;
         }
-
-        public List<ContactViewModel> MapList(List<Contact> contacts)
-        {
-            List<ContactViewModel> contactViewModels = new List<ContactViewModel>();
-            foreach (Contact contact in contacts)
-            {
-                contactViewModels.Add(Map(contact));
-            }
-
-            return contactViewModels;
-        }
     }
 }

@@ -161,6 +161,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mappers\ContactViewModelListMapper.cs" />
+    <Compile Include="Mappers\IMapToNewIListMapper.cs" />
     <Compile Include="Mappers\ContactMapper.cs" />
     <Compile Include="Mappers\ContactViewModelMapper.cs" />
     <Compile Include="Mappers\IMapToExistingMapper.cs" />

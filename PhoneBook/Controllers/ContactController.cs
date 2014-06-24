@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
 using PhoneBook.DAL;
@@ -24,10 +25,12 @@ namespace PhoneBook.Controllers
         private IMapToNew<Contact, ContactViewModel> contactViewModelMapper = new ContactViewModelMapper();
         private IMapToExisting<Contact, ContactViewModel> contactMapper = new ContactMapper();
         private ContactQuerier contactQuerier;
+        private IMapToNewListMapper<Contact, ContactViewModel> contactViewModeListMapper; 
 
         public ContactController()
         {
             contactQuerier = new ContactQuerier(db);
+            contactViewModeListMapper = new ContactViewModelListMapper(contactViewModelMapper);
         }
         //
         // GET: /Contact/
@@ -37,7 +40,7 @@ namespace PhoneBook.Controllers
             int currentUserId = WebSecurity.GetUserId(User.Identity.Name);
             IQueryable<Contact> contacts = contactQuerier.GetContactsFor(currentUserId);
 
-            List<ContactViewModel> contactViewModels = contactViewModelMapper.MapList(contacts.ToList());
+            List<ContactViewModel> contactViewModels = contactViewModeListMapper.Map(contacts.ToList());
             
             return View(contactViewModels);
         }
@@ -173,7 +176,8 @@ namespace PhoneBook.Controllers
                            select contact;
             }
 
-            return View("Index", contacts);
+            List<ContactViewModel> contactViewModels = contactViewModeListMapper.Map(contacts.ToList());
+            return View("Index", contactViewModels);
         }
 
         protected override void Dispose(bool disposing)
