@@ -9,20 +9,20 @@ namespace PhoneBook.Mappers
 {
     public class ContactMapper : IMapToExisting<Contact, ContactViewModel>
     {
-        public void Map(Contact model, ContactViewModel viewModel, UserProfile owner)
+        public void Map(Contact contact, ContactViewModel contactViewModel, UserProfile owner)
         {
-            model.Name = viewModel.Name;
-            model.ID = viewModel.ID;
-            model.Number = viewModel.Number;
+            contact.Name = contactViewModel.Name;
+            contact.ID = contactViewModel.ID;
+            contact.Number = contactViewModel.Number;
             if (owner != null)
             {
-                model.Owner = owner;
+                contact.Owner = owner;
             }
         }
 
-        public void Map(Contact source, ContactViewModel target)
+        public void Map(Contact contact, ContactViewModel contactViewModel)
         {
-            Map(source, target, null);
+            Map(contact, contactViewModel, null);
         }
     }
 }

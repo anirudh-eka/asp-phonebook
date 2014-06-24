@@ -9,12 +9,12 @@ namespace PhoneBook.Mappers
 {
     public class ContactViewModelMapper : IMapToNew<Contact, ContactViewModel>
     {
-        public ContactViewModel Map(Contact source)
+        public ContactViewModel Map(Contact contact)
         {
             ContactViewModel contactViewModel = new ContactViewModel();
-            contactViewModel.Name = source.Name;
-            contactViewModel.Number = source.Number;
-            contactViewModel.ID = source.ID;
+            contactViewModel.Name = contact.Name;
+            contactViewModel.Number = contact.Number;
+            contactViewModel.ID = contact.ID;
 
             return contactViewModel;
         }

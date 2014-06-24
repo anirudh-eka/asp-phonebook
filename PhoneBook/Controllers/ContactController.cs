@@ -79,8 +79,8 @@ namespace PhoneBook.Controllers
                 
                 Contact contact = new Contact();
                 contactMapper.Map(contact, contactViewModel, owner);
-                    db.Contacts.Add(contact);
-                    db.SaveChanges();
+                db.Contacts.Add(contact);
+                db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
