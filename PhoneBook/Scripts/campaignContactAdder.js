@@ -14,7 +14,8 @@
                 success: function (data) {
                     response($.map(data, function (contact) {
                         return {
-                            label: contact.Name + ", " + contact.Number,
+                            nameAndNumber: contact.Name + ", " + contact.Number,
+                            label: "Name: " + contact.Name + " Number: " + contact.Number,
                             value: contact.Name,
                             ID: contact.ID
                         }
@@ -31,7 +32,8 @@
 });
 
 var addToCampaignView = function (contact) {
-    addToContactList(contact.label);
+    addToContactList(contact.nameAndNumber);
+
     
 }
 
