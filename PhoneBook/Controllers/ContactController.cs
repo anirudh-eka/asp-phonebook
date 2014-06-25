@@ -187,8 +187,8 @@ namespace PhoneBook.Controllers
         {
             int currentUserId = WebSecurity.GetUserId(User.Identity.Name);
             var contacts = from contact in db.Contacts
-                       where contact.Owner.UserId == currentUserId
-                       && (contact.Name.Contains(searchString) || contact.Number.Contains(searchString))
+                       where 
+                       (contact.Name.Contains(searchString) || contact.Number.Contains(searchString))
                        select contact;
 
             List<ContactViewModel> contactViewModels = contactViewModeListMapper.Map(contacts.ToList());

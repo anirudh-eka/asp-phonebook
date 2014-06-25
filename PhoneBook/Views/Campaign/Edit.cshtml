@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Edit";
 }
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <h2>Edit</h2>
 
 @using (Html.BeginForm()) {
@@ -30,6 +30,7 @@
             @Html.EditorFor(model => model.Date)
             @Html.ValidationMessageFor(model => model.Date)
         </div>
+       
 
         <p>
             <input type="submit" value="Save" />
@@ -37,10 +38,20 @@
     </fieldset>
 }
 
+
+
+    <p>
+        Search: @Html.TextBox("id", "", new { id = "addContactToCampaign" }) <br />
+       
+    </p>
+
+
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/scripts/jquery-ui-1.8.24.min.js")
+    @Scripts.Render("~/scripts/campaignContactAdder.js")
 }

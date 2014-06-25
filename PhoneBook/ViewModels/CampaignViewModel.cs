@@ -14,6 +14,6 @@ namespace PhoneBook.ViewModels
         [Required(ErrorMessage = "Date is required")]
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
-    
+        
     }
 }
