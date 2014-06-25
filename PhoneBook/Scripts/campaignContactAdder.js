@@ -3,7 +3,7 @@
     $("#addContactToCampaign").autocomplete({
         source: function (request, response) {
             $.ajax({
-                url: "contact/getContacts",
+                url: "http://localhost:1147/contact/getContacts",
                 dataType: "json",
                 data: {
                     featureClass: "P",
@@ -25,12 +25,17 @@
         },
         minLength: 2,
         select: function (event, ui) {
-            window.location = 'contact/details/' + ui.item.ID;
+            addToCampaignView(ui.item);
         }
     });
 });
 
-var addToCampaign = function (contact) {
-    buildContactElement(contact);
-    $("#campaign-attendees").append();
+var addToCampaignView = function (contact) {
+    addToContactList(contact.label);
+    
+}
+
+var addToContactList = function log(message) {
+    $("<div>").text(message).prependTo("#campaign-attendees");
+    $("#campaign-attendees").scrollTop(0);
 }
