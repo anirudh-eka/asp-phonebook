@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace PhoneBook.Models
 {
@@ -20,5 +21,6 @@ namespace PhoneBook.Models
         public string Name { get; set; }
         public string Number { get; set; }
         public virtual UserProfile Owner { get; set; }
+        public virtual ICollection<Campaign> Campaign { get; set; }
     }
 }

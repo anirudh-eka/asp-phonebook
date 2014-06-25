@@ -1,9 +1,7 @@
 ﻿$(function () {
-    console.log("Hi im runnnin");
 
     $("#searchBox").autocomplete({
         source: function(request, response) {
-            console.log("oh you wanna ajax huh?");
             $.ajax({
                 url: "http://localhost:1147/contact/getContacts",
                 dataType: "json",
@@ -31,3 +29,8 @@
         }
     });
 });
+
+var addToCampaign = function (contact) {
+    buildContactElement(contact);
+    $("#campaign-attendees").append();
+}

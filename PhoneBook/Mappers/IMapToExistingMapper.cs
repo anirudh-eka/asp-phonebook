@@ -10,6 +10,5 @@ namespace PhoneBook.Mappers
     {
         void Map(TSource source, TTarget target);
 
-        void Map(TSource source, TTarget target, UserProfile owner);
     }
 }

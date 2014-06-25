@@ -84,7 +84,8 @@ namespace PhoneBook.Controllers
                 UserProfile owner = db.UserProfiles.Find(CurrentUserId);
                 
                 Contact contact = new Contact();
-                contactMapper.Map(contact, contactViewModel, owner);
+                contactMapper.Map(contact, contactViewModel);
+                contact.Owner = owner;
                 db.Contacts.Add(contact);
                 db.SaveChanges();
 
@@ -182,10 +183,9 @@ namespace PhoneBook.Controllers
         }
 
         // GET Contact/GetContacts
-        public JsonResult GetContacts()
+        public JsonResult GetContacts(string searchString)
         {
             int currentUserId = WebSecurity.GetUserId(User.Identity.Name);
-            string searchString = Request.Params.Get("searchString");
             var contacts = from contact in db.Contacts
                        where contact.Owner.UserId == currentUserId
                        && (contact.Name.Contains(searchString) || contact.Number.Contains(searchString))
