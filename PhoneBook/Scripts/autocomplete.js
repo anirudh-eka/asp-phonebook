@@ -1,35 +1,8 @@
 ﻿$(function () {
     console.log("Hi im runnnin");
-//    function log(message) {
-//        $("<div>").text(message).prependTo("#log");
-//        $("#log").scrollTop(0);
-//    }
-        var availableTags = [
-        "ActionScript",
-        "AppleScript",
-        "Asp",
-        "BASIC",
-        "C",
-        "C++",
-        "Clojure",
-        "COBOL",
-        "ColdFusion",
-        "Erlang",
-        "Fortran",
-        "Groovy",
-        "Haskell",
-        "Java",
-        "JavaScript",
-        "Lisp",
-        "Perl",
-        "PHP",
-        "Python",
-        "Ruby",
-        "Scala",
-        "Scheme"
-        ];
+
     $("#searchBox").autocomplete({
-        source: function (request, response) {
+        source: function(request, response) {
             console.log("oh you wanna ajax huh?");
             $.ajax({
                 url: "http://localhost:1147/contact/getContacts",
@@ -41,30 +14,20 @@
                     searchString: request.term
                 },
                 success: function(data) {
-                    console.log(data);
-                    console.log(data[0]);
-                    console.log(data[0].Name);
-                    response($.map(data, function (contact) {
+                    response($.map(data, function(contact) {
                         return {
-                            label: contact.Name +  ", " + contact.Number,
-                            value: contact.Name
+                            label: contact.Name + ", " + contact.Number,
+                            value: contact.Name,
+                            ID: contact.ID
                         }
                     }));
-                    
+
                 }
             });
         },
         minLength: 2,
-        select: function (event, ui) {
-//            log(ui.item ?
-//            "Selected: " + ui.item.label :
-//            "Nothing selected, input was " + this.value);
-        },
-        open: function () {
-            $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
-        },
-        close: function () {
-            $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+        select: function(event, ui) {
+            window.location = 'contact/details/' + ui.item.ID;
         }
     });
 });

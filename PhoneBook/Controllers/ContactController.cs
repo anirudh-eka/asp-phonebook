@@ -196,18 +196,6 @@ namespace PhoneBook.Controllers
             return Json(contactViewModels, JsonRequestBehavior.AllowGet);
         }
 
-        // GET Contact/GetContacts/5
-        public Contact GetContact(int id)
-        {
-            Contact contact = db.Contacts.Find(id);
-            if (contact == null)
-            {
-                //                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
-            }
-
-            return contact;
-        }
-
         protected override void Dispose(bool disposing)
         {
             db.Dispose();
