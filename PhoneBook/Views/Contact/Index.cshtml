@@ -14,7 +14,7 @@
     @using (Html.BeginForm("Search", "Contact"))
     {
         <p>
-            Name: @Html.TextBox("id") <br/>
+            Search: @Html.TextBox("id","",new {id="searchBox"}) <br/>
             <input type="submit" value="Search"/>
         </p>
     }

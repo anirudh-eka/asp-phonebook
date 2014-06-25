@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using PhoneBook.DAL;
 using PhoneBook.Filters;
 using PhoneBook.Mappers;
@@ -44,6 +46,7 @@ namespace PhoneBook.Controllers
             
             return View(contactViewModels);
         }
+
 
         //
         // GET: /Contact/Details/5
@@ -156,28 +159,53 @@ namespace PhoneBook.Controllers
 
         public ActionResult Search(string id)
         {
-            int CurrentUserId = WebSecurity.GetUserId(User.Identity.Name);
-            UserProfile owner = db.UserProfiles.Find(CurrentUserId);
+            int currentUserId = WebSecurity.GetUserId(User.Identity.Name);
 
-            IQueryable<Contact> contacts = Enumerable.Empty<Contact>().AsQueryable();
-
+            IQueryable<Contact> contacts; 
             
             if (String.IsNullOrEmpty(id))
             {
                 contacts = from contact in db.Contacts
-                           where contact.Owner.UserId == CurrentUserId
+                           where contact.Owner.UserId == currentUserId
                            select contact;
             }
             else
             {
                 contacts = from contact in db.Contacts
-                           where contact.Owner.UserId == CurrentUserId
+                           where contact.Owner.UserId == currentUserId
                            && (contact.Name.Contains(id) || contact.Number.Contains(id))
                            select contact;
             }
 
             List<ContactViewModel> contactViewModels = contactViewModeListMapper.Map(contacts.ToList());
             return View("Index", contactViewModels);
+        }
+
+        // GET Contact/GetContacts
+        public JsonResult GetContacts()
+        {
+            int currentUserId = WebSecurity.GetUserId(User.Identity.Name);
+            string searchString = Request.Params.Get("searchString");
+            var contacts = from contact in db.Contacts
+                       where contact.Owner.UserId == currentUserId
+                       && (contact.Name.Contains(searchString) || contact.Number.Contains(searchString))
+                       select contact;
+
+            List<ContactViewModel> contactViewModels = contactViewModeListMapper.Map(contacts.ToList());
+
+            return Json(contactViewModels, JsonRequestBehavior.AllowGet);
+        }
+
+        // GET Contact/GetContacts/5
+        public Contact GetContact(int id)
+        {
+            Contact contact = db.Contacts.Find(id);
+            if (contact == null)
+            {
+                //                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+            }
+
+            return contact;
         }
 
         protected override void Dispose(bool disposing)

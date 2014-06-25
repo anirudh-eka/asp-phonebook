@@ -19,8 +19,8 @@ namespace PhoneBookTest.Mappers
         {
             var mapperMock = new Mock<IMapToNew<Contact, ContactViewModel>>();
 
-            Contact contactOne = new Contact(1, "Mike Jones", "281-330-8004");
-            Contact contactTwo = new Contact(2, "Christine Jones", "281-330-8005");
+            var contactOne = new Contact(1, "Mike Jones", "281-330-8004");
+            var contactTwo = new Contact(2, "Christine Jones", "281-330-8005");
 
             mapperMock.Setup(framework => framework.Map(contactOne))
                 .Returns(new ContactViewModel(1, "Mike Jones", "281-330-8004"));
