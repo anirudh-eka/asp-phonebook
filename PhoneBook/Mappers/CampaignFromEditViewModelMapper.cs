@@ -7,15 +7,12 @@ using PhoneBook.ViewModels;
 
 namespace PhoneBook.Mappers
 {
-    public class CampaignMapper : IMapToExisting<CampaignViewModel, Campaign>
+    public class CampaignFromEditViewModelMapper : IMapToExisting<CampaignEditViewModel, Campaign>
     {
-        public void Map(CampaignViewModel source, Campaign target)
+        public void Map(CampaignEditViewModel source, Campaign target)
         {
             target.Name = source.Name;
             target.Date = source.Date;
         }
-
-
     }
 }
-

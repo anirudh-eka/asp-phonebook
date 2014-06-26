@@ -161,6 +161,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CampaignController.cs" />
     <Compile Include="Mappers\CampaignEditViewModelMapper.cs" />
+    <Compile Include="Mappers\CampaignFromEditViewModelMapper.cs" />
     <Compile Include="ViewModels\CampaignEditViewModel.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -390,6 +391,7 @@
     <Content Include="Views\Campaign\Index.cshtml" />
     <Content Include="Views\Campaign\Create.cshtml" />
     <Content Include="Views\Campaign\Edit.cshtml" />
+    <Content Include="Views\Campaign\AddContacts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

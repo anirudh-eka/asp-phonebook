@@ -14,7 +14,7 @@
                 success: function (data) {
                     response($.map(data, function (contact) {
                         return {
-                            label: contact.Name + "    " + contact.Number,
+                            label: contact.Name + "    " + contact.Number +" (#"+ contact.ID + ")",
                             value: contact.Name,
                             ID: contact.ID,
                             Name: contact.Name,

@@ -23,7 +23,7 @@ namespace PhoneBook.Controllers
         private IMapToExisting<CampaignViewModel, Campaign> campaignMapper = new CampaignMapper();
         private IMapToExisting<Campaign, CampaignEditViewModel> campaignEditViewModelMapper =
             new CampaignEditViewModelMapper();
-
+        private IMapToExisting<CampaignEditViewModel, Campaign> campaignFromEditViewModelMapper = new CampaignFromEditViewModelMapper();
         //
         // GET: /Campaign/
         public ActionResult Index()
@@ -51,7 +51,7 @@ namespace PhoneBook.Controllers
                 campaignMapper.Map(campaignViewModel, campaign);
                 db.Campaigns.Add(campaign);
                 db.SaveChanges();
-                return RedirectToAction("Edit/" + campaign.ID);
+                return RedirectToAction("AddContacts/" + campaign.ID);
             }
 
             return View(campaignViewModel);
@@ -62,6 +62,33 @@ namespace PhoneBook.Controllers
 
         public ActionResult Edit(int id = 0)
         {   
+            Campaign campaign = db.Campaigns.Find(id);
+            if (campaign == null)
+            {
+                return HttpNotFound();
+            }
+            CampaignEditViewModel campaignEditViewModel = new CampaignEditViewModel();
+            campaignEditViewModelMapper.Map(campaign, campaignEditViewModel);
+            return View(campaignEditViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(CampaignEditViewModel campaignEditViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var campaign = db.Campaigns.Find(campaignEditViewModel.ID);
+                campaignFromEditViewModelMapper.Map(campaignEditViewModel, campaign);
+
+                db.Entry(campaign).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(campaignEditViewModel);
+        }
+
+        public ActionResult AddContacts(int id = 0)
+        {
             Campaign campaign = db.Campaigns.Find(id);
             if (campaign == null)
             {
