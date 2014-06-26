@@ -622,6 +622,20 @@ tr.pager td {
     overflow: auto; 
 }
 
+.delete-button-container {
+    height: 19px;
+    width: 15px;
+}
+
+.delete-button {
+    display: inherit;
+    padding: 0px;
+    font-size: 0.8em;
+    height: 100%;
+    width: 100%;
+    color: red;
+}
+
 
 /********************
 *   Mobile Styles   *

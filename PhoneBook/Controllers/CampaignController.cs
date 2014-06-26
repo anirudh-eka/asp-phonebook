@@ -81,7 +81,7 @@ namespace PhoneBook.Controllers
             campaign.Contact.Add(contact);
             db.SaveChanges();
             
-            return Json("Sucess");
+            return Json("Success");
         }
         
     }

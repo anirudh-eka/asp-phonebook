@@ -73,5 +73,5 @@ var setUpDeleteButton = function(id) {
 var prependToContactAttendees = function(contact) {
     $("<div contactId=" + contact.ID + ">").text(contact.Name).prependTo(".campaign-attendees-names");
     $("<div contactId=" + contact.ID + ">").text(contact.Number).prependTo(".campaign-attendees-phonenumbers");
-    $("<div class='delete-button' contactId=" + contact.ID + ">").text("[X]").prependTo(".campaign-attendees-delete");
+    $("<div class='delete-button-container' contactId=" + contact.ID + ">").html("<button class='delete-button'>X</button>").prependTo(".campaign-attendees-delete");
 }
