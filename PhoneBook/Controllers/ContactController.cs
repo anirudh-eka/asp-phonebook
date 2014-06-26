@@ -47,22 +47,6 @@ namespace PhoneBook.Controllers
             return View(contactViewModels);
         }
 
-
-        //
-        // GET: /Contact/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Contact contact = contactQuerier.GetContactById(id);
-            int CurrentUserId = WebSecurity.GetUserId(User.Identity.Name);
-            if (contact == null || (contact.Owner.UserId != CurrentUserId))
-            {
-                return HttpNotFound();
-            }
-            ContactViewModel contactViewModel = contactViewModelMapper.Map(contact);
-            return View(contactViewModel);
-        }
-
         //
         // GET: /Contact/Create
 
@@ -156,7 +140,7 @@ namespace PhoneBook.Controllers
         }
 
         //
-        // GET: /Contacts/Search/Cameron
+        // GET: /Contacts/Search/
 
         public ActionResult Search(string id)
         {

@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <h2>Add Contacts</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Campaign"))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -34,7 +34,7 @@
 
 
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" action="/edit" value="Save" />
         </p>
     </fieldset>
 }
