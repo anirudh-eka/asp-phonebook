@@ -34,37 +34,44 @@
 });
 
 var addToCampaignView = function (contact) {
-    addToContactList(contact);
+    
     var campaignId = $('#ID').attr('value');
     $.ajax({
-        url: "http://localhost:1147/campaign/postContact",
+        url: "http://localhost:1147/campaign/PostContact",
         type: "POST",
         data: {
-            contactName: contact.Name,
-            contactNumber: contact.Number,
             contactID: contact.ID,
-            campaignID: campaignId,
+            campaignID: campaignId
             },
         dataType: "json",
-        success: function (result) {
-            switch (result) {
-                case true:
-                    alert(result);
-                    break;
-                default:
-                    alert(result);
-            }
-        },
+        success: function () {
+            addToContactList(contact);
+            },
+        
         error: function (xhr, ajaxOptions, thrownError) {
             alert(xhr.status);
             alert(thrownError);
         }
     });
-    
+ }   
+
+var addToContactList = function (contact) {
+    prependToContactAttendees(contact);
+    setUpDeleteButton(contact.ID);
+    $("#campaign-attendees").scrollTop(0);
 }
 
-var addToContactList = function log(contact) {
-    $("<div>").text(contact.Name).prependTo(".campaign-attendees-names");
-    $("<div>").text(contact.Number).prependTo(".campaign-attendees-phonenumbers");
-    $("#campaign-attendees").scrollTop(0);
+var setUpDeleteButton = function(id) {
+    var selector = $("div").find("[contactID='" + id + "']");
+    var deleteButton = selector[2];
+
+    $(deleteButton).on('click', function () {
+        selector.remove();
+    });
+}
+
+var prependToContactAttendees = function(contact) {
+    $("<div contactId=" + contact.ID + ">").text(contact.Name).prependTo(".campaign-attendees-names");
+    $("<div contactId=" + contact.ID + ">").text(contact.Number).prependTo(".campaign-attendees-phonenumbers");
+    $("<div class='delete-button' contactId=" + contact.ID + ">").text("[X]").prependTo(".campaign-attendees-delete");
 }
