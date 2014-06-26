@@ -84,5 +84,16 @@ namespace PhoneBook.Controllers
             return Json("Success");
         }
         
+        //Post: /campaign/deleteContact
+        [HttpPost]
+        public JsonResult DeleteContact(int contactID, int campaignID)
+        {
+            var campaign = db.Campaigns.Find(campaignID);
+            var contact = db.Contacts.Find(contactID);
+            campaign.Contact.Remove(contact);
+
+            db.SaveChanges();
+            return Json("Success");
+        }
     }
 }

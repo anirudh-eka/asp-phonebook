@@ -14,8 +14,7 @@
                 success: function (data) {
                     response($.map(data, function (contact) {
                         return {
-                            nameAndNumber: contact.Name + ", " + contact.Number,
-                            label: "Name: " + contact.Name + " Number: " + contact.Number,
+                            label: contact.Name + "    " + contact.Number,
                             value: contact.Name,
                             ID: contact.ID,
                             Name: contact.Name,
@@ -61,12 +60,13 @@ var addToContactList = function (contact) {
     $("#campaign-attendees").scrollTop(0);
 }
 
-var setUpDeleteButton = function(id) {
-    var selector = $("div").find("[contactID='" + id + "']");
-    var deleteButton = selector[2];
+var setUpDeleteButton = function(contactID) {
+    var contactRow = $("div").find("[contactID='" + contactID + "']");
+    var deleteButton = contactRow[2];
 
     $(deleteButton).on('click', function () {
-        selector.remove();
+        
+        removeFromCampaignDatabase(contactID, contactRow);
     });
 }
 
@@ -74,4 +74,25 @@ var prependToContactAttendees = function(contact) {
     $("<div contactId=" + contact.ID + ">").text(contact.Name).prependTo(".campaign-attendees-names");
     $("<div contactId=" + contact.ID + ">").text(contact.Number).prependTo(".campaign-attendees-phonenumbers");
     $("<div class='delete-button-container' contactId=" + contact.ID + ">").html("<button class='delete-button'>X</button>").prependTo(".campaign-attendees-delete");
+}
+
+var removeFromCampaignDatabase = function (contactID, contactRow) {
+    var campaignID = $('#ID').attr('value');
+    $.ajax({
+        url: "http://localhost:1147/campaign/DeleteContact",
+        type: "POST",
+        data: {
+            contactID: contactID,
+            campaignID: campaignID
+        },
+        dataType: "json",
+        success: function () {
+            contactRow.remove();
+        },
+
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
+        }
+    });
 }
