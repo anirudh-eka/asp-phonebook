@@ -4,7 +4,9 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using PhoneBook.Filters;
 using PhoneBook.Mappers;
 using PhoneBook.Models;
@@ -68,6 +70,18 @@ namespace PhoneBook.Controllers
             CampaignEditViewModel campaignEditViewModel = new CampaignEditViewModel();
             campaignEditViewModelMapper.Map(campaign, campaignEditViewModel);
             return View(campaignEditViewModel);
+        }
+
+        [HttpPost]
+        public JsonResult PostContact(int contactID, int campaignID)
+        {
+            var contact = db.Contacts.Find(contactID);
+            var campaign = db.Campaigns.Find(campaignID);
+
+            campaign.Contact.Add(contact);
+            db.SaveChanges();
+            
+            return Json("Sucess");
         }
         
     }

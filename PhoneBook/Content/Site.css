@@ -618,7 +618,8 @@ tr.pager td {
     display: inline-block;
     border:none; 
     height: 200px; 
-    width: 30px; 
+    width: 30px;
+    overflow: auto; 
 }
 
 
