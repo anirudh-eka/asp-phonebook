@@ -11,5 +11,6 @@ namespace PhoneBook.DAL
     {
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Campaign> Campaigns { get; set; }
     }
 }

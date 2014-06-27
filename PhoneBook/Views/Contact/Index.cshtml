@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Index";
 }
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+
 
 <h2>Index</h2>
 
@@ -14,7 +16,7 @@
     @using (Html.BeginForm("Search", "Contact"))
     {
         <p>
-            Name: @Html.TextBox("id") <br/>
+            Search: @Html.TextBox("id","",new {id="searchBox"}) <br/>
             <input type="submit" value="Search"/>
         </p>
     }
@@ -41,10 +43,15 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>
     </tr>
 }
 
 </table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/scripts/jquery-ui-1.8.24.min.js")
+    @Scripts.Render("~/scripts/autocomplete.js")
+}

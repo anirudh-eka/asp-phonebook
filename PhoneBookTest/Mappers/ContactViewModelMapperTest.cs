@@ -13,25 +13,20 @@ namespace PhoneBookTest.Mappers
     
     class ContactViewModelMapperTest
     {
+        private ContactViewModelMapper mapper = new ContactViewModelMapper();
+
         [Test]
-        public void createsNewViewModelGivenModel()
+        public void CreatesNewViewModelGivenModel()
         {
-            Contact model = new Contact();
-            model.ID = 1;
-            model.Name = "Mike Jones";
-            model.Number = "281-330-8004";
-
-            ContactViewModel viewModel = new ContactViewModel();
-            viewModel.ID = 1;
-            viewModel.Name = "Mike Jones";
-            viewModel.Number = "281-330-8004";
-
-
-            ContactViewModelMapper mapper = new ContactViewModelMapper();
+            Contact model = new Contact(1, "Mike Jones", "281-330-8004");
+            
             ContactViewModel result = mapper.Map(model);
-            Assert.AreEqual(model.Name, result.Name);
-            Assert.AreEqual(model.Number, result.Number);
-            Assert.AreEqual(model.ID, result.ID);// do your test in here
+            Assert.IsTrue(ModelAndViewModelAreEqual(model, result));
         }
+
+        private bool ModelAndViewModelAreEqual(Contact model, ContactViewModel viewModel)
+        {
+            return model.Name == viewModel.Name && model.ID == viewModel.ID && model.Number == viewModel.Number;
+        } 
     }
 }

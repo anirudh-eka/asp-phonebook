@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PhoneBook.Models;
+using PhoneBook.ViewModels;
 
 namespace PhoneBook.Mappers
 {
-    public interface IMapToExisting<TSource, TTarget>
+    public interface IMapToNewListMapper<TSource, TTarget>
     {
-        void Map(TSource source, TTarget target);
-
+        List<TTarget> Map(List<TSource> contacts);
     }
 }

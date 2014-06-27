@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>@ViewBag.Title - Phone Book</title>
+        <title>@ViewBag.Title - CRM</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
@@ -12,7 +12,7 @@
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("Phone Book", "Index", "Contact")</p>
+                    <p class="site-title">@Html.ActionLink("CRM", "Index", "Contact")</p>
                 </div>
                 <div class="float-right">
                     <section id="login">
@@ -20,7 +20,8 @@
                     </section>
                     <nav>
                         <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Contact")</li>
+                            <li>@Html.ActionLink("Campaigns", "Index", "Campaign")</li>
+                            <li>@Html.ActionLink("Contacts", "Index", "Contact")</li>
                             <li>@Html.ActionLink("About", "About", "Home")</li>
                         </ul>
                     </nav>

@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using PhoneBook.DAL;
 using PhoneBook.Filters;
 using PhoneBook.Mappers;
 using PhoneBook.Models;
+using PhoneBook.Queriers;
 using PhoneBook.ViewModels;
 using WebMatrix.WebData;
 
@@ -22,37 +26,25 @@ namespace PhoneBook.Controllers
         private PhoneBookContext db = new PhoneBookContext();
         private IMapToNew<Contact, ContactViewModel> contactViewModelMapper = new ContactViewModelMapper();
         private IMapToExisting<Contact, ContactViewModel> contactMapper = new ContactMapper();
+        private ContactQuerier contactQuerier;
+        private IMapToNewListMapper<Contact, ContactViewModel> contactViewModeListMapper; 
+
+        public ContactController()
+        {
+            contactQuerier = new ContactQuerier(db);
+            contactViewModeListMapper = new ContactViewModelListMapper(contactViewModelMapper);
+        }
         //
         // GET: /Contact/
 
         public ActionResult Index()
         {
-            IQueryable<Contact> contacts = from contact in db.Contacts select contact;
+            int currentUserId = WebSecurity.GetUserId(User.Identity.Name);
+            IQueryable<Contact> contacts = contactQuerier.GetContactsFor(currentUserId);
+
+            List<ContactViewModel> contactViewModels = contactViewModeListMapper.Map(contacts.ToList());
             
-            int CurrentUserId = WebSecurity.GetUserId(User.Identity.Name);
-            contacts = contacts.Where(c => c.Owner.UserId == CurrentUserId);
-
-            List<ContactViewModel> contactViewModels = new List<ContactViewModel>();
-            foreach (Contact contact in contacts)
-            {
-                contactViewModels.Add(contactViewModelMapper.Map(contact));
-            }
             return View(contactViewModels);
-        }
-
-        //
-        // GET: /Contact/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Contact contact = db.Contacts.Find(id);
-            int CurrentUserId = WebSecurity.GetUserId(User.Identity.Name);
-            if (contact == null || (contact.Owner.UserId != CurrentUserId))
-            {
-                return HttpNotFound();
-            }
-            ContactViewModel contactViewModel = contactViewModelMapper.Map(contact);
-            return View(contactViewModel);
         }
 
         //
@@ -68,23 +60,23 @@ namespace PhoneBook.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Contact contact)
+        public ActionResult Create(ContactViewModel contactViewModel)
         {
             if (ModelState.IsValid)
             {
                 int CurrentUserId = WebSecurity.GetUserId(User.Identity.Name);
                 UserProfile owner = db.UserProfiles.Find(CurrentUserId);
+                
+                Contact contact = new Contact();
+                contactMapper.Map(contact, contactViewModel);
+                contact.Owner = owner;
+                db.Contacts.Add(contact);
+                db.SaveChanges();
 
-                if (owner != null)
-                {
-                    contact.Owner = owner;
-                    db.Contacts.Add(contact);
-                    db.SaveChanges();
-                }
                 return RedirectToAction("Index");
             }
 
-            return View(contact);
+            return View(contactViewModel);
         }
 
         //
@@ -148,31 +140,44 @@ namespace PhoneBook.Controllers
         }
 
         //
-        // GET: /Contacts/Search/Cameron
+        // GET: /Contacts/Search/
 
         public ActionResult Search(string id)
         {
-            int CurrentUserId = WebSecurity.GetUserId(User.Identity.Name);
-            UserProfile owner = db.UserProfiles.Find(CurrentUserId);
+            int currentUserId = WebSecurity.GetUserId(User.Identity.Name);
 
-            IQueryable<Contact> contacts = Enumerable.Empty<Contact>().AsQueryable();
-
+            IQueryable<Contact> contacts; 
             
             if (String.IsNullOrEmpty(id))
             {
                 contacts = from contact in db.Contacts
-                           where contact.Owner.UserId == CurrentUserId
+                           where contact.Owner.UserId == currentUserId
                            select contact;
             }
             else
             {
                 contacts = from contact in db.Contacts
-                           where contact.Owner.UserId == CurrentUserId
+                           where contact.Owner.UserId == currentUserId
                            && (contact.Name.Contains(id) || contact.Number.Contains(id))
                            select contact;
             }
 
-            return View("Index", contacts);
+            List<ContactViewModel> contactViewModels = contactViewModeListMapper.Map(contacts.ToList());
+            return View("Index", contactViewModels);
+        }
+
+        // GET Contact/GetContacts
+        public JsonResult GetContacts(string searchString)
+        {
+            int currentUserId = WebSecurity.GetUserId(User.Identity.Name);
+            var contacts = from contact in db.Contacts
+                       where 
+                       (contact.Name.Contains(searchString) || contact.Number.Contains(searchString))
+                       select contact;
+
+            List<ContactViewModel> contactViewModels = contactViewModeListMapper.Map(contacts.ToList());
+
+            return Json(contactViewModels, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

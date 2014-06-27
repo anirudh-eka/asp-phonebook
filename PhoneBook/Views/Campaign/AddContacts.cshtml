@@ -1,0 +1,85 @@
+﻿@model PhoneBook.ViewModels.CampaignEditViewModel
+
+@{
+    ViewBag.Title = "Add Contacts";
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<h2>Add Contacts</h2>
+
+<div class="existing-contacts">
+    @foreach (var contact in Model.Contacts)
+    {<div class="existing-contact">
+         @Html.HiddenFor(theContact => contact.Name)
+         @Html.HiddenFor(theContact => contact.Number)
+         @Html.HiddenFor(theContact => contact.ID)
+     </div>
+    }
+</div>
+
+@using (Html.BeginForm("Edit", "Campaign"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Campaign</legend>
+
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Date)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Date)
+            @Html.ValidationMessageFor(model => model.Date)
+        </div>
+
+
+        <p>
+            <input type="submit" action="/edit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+
+
+<p>
+    Search: @Html.TextBox("Search For Contacts", "", new { id = "addContactToCampaign", placeholder = "Add a contact" }) <br />
+
+</p>
+<div class="campaign-attendees-display">
+    <div class="labels">
+        <div class="column-header">Name</div>
+        <div class="column-header">Phone Number</div>
+    </div>
+    <div class="fake-table">
+        <div class="ui-widget-content, campaign-attendees-names"></div>
+        <div class="ui-widget-content, campaign-attendees-phonenumbers"></div>
+        <div class="ui-widget-content, campaign-attendees-delete"></div>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<div id="add-duplicate-confirm" class="confirmation-popup" title="Cannot add duplicate user">
+    <p><span class="ui-icon ui-icon-alert"></span>This user is already in the campaign.</p>
+</div>
+
+<div id="delete-confirm" class="confirmation-popup" title="Remove user?">
+    <p><span class="ui-icon ui-icon-alert"></span>Are you sure you want to remove them from this campaign?</p>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/scripts/jquery-ui-1.8.24.min.js")
+    @Scripts.Render("~/scripts/campaignContactAdder.js")
+}
