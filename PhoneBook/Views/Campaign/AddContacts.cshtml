@@ -60,7 +60,11 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
-<div id="add-duplicate-confirm" title="Add duplicate user?">
+<div id="add-duplicate-confirm" class="confirmation-popup" title="Add duplicate user?">
+    <p><span class="ui-icon ui-icon-alert"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+<div id="delete-confirm" class="confirmation-popup" title="Delete user?">
     <p><span class="ui-icon ui-icon-alert"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
 </div>
 

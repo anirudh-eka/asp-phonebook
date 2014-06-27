@@ -40,6 +40,8 @@ $(function () {
                         },
                         Cancel: function() {
                             $(this).dialog("close");
+                            $('#addContactToCampaign').val("");
+                            $('#addContactToCampaign').focus();
                         }
                     }
                 });
@@ -58,7 +60,7 @@ var addToCampaignView = function (contact) {
         data: {
             contactID: contact.ID,
             campaignID: campaignId
-            },
+        },
         dataType: "json",
         success: function () {
             addToContactList(contact);
@@ -76,14 +78,27 @@ var addToContactList = function (contact) {
     setUpDeleteButton(contact.ID);
     $("#campaign-attendees").scrollTop(0);
     $('#addContactToCampaign').val("");
+    $('#addContactToCampaign').focus();
 };
 var setUpDeleteButton = function(contactID) {
     var contactRow = $("div").find("[contactID='" + contactID + "']");
     var deleteButton = contactRow[2];
 
     $(deleteButton).on('click', function () {
-        
-        removeFromCampaignDatabase(contactID, contactRow);
+        $("#delete-confirm").dialog({
+            resizable: false,
+            height: 140,
+            modal: true,
+            buttons: {
+                "Delete": function () {
+                    $(this).dialog("close");
+                    removeFromCampaignDatabase(contactID, contactRow);
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
     });
 };
 var prependToContactAttendees = function(contact) {
