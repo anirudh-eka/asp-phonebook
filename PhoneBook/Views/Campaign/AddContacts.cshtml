@@ -6,6 +6,16 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <h2>Add Contacts</h2>
 
+<div class="existing-contacts">
+    @foreach (var contact in Model.Contacts)
+    {<div class="existing-contact">
+         @Html.HiddenFor(theContact => contact.Name)
+         @Html.HiddenFor(theContact => contact.Number)
+         @Html.HiddenFor(theContact => contact.ID)
+     </div>
+    }
+</div>
+
 @using (Html.BeginForm("Edit", "Campaign"))
 {
     @Html.AntiForgeryToken()

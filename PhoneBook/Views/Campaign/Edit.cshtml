@@ -1,4 +1,5 @@
-﻿@model PhoneBook.ViewModels.CampaignEditViewModel
+﻿@using PhoneBook.ViewModels
+@model PhoneBook.ViewModels.CampaignEditViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -14,6 +15,8 @@
         <legend>Campaign</legend>
 
         @Html.HiddenFor(model => model.ID)
+        @Html.EditorFor(model => model.Contacts)
+        
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Name)

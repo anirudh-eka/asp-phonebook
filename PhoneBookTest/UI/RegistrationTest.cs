@@ -15,7 +15,7 @@ namespace PhoneBookTest.Feature
         {
             var page = Host.Instance.NavigateToInitialPage<HomePage>();
 
-            Assert.That(page.Title, Is.EqualTo("Log in - Phone Book"));
+            Assert.That(page.Title, Is.EqualTo("Log in - CRM"));
         }
     }
 }

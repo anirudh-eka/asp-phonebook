@@ -66,7 +66,7 @@ var addToCampaignView = function (contact) {
             alert(thrownError);
         }
     });
- };
+};
 var addToContactList = function (contact) {
     prependToContactAttendees(contact);
     setUpDeleteButton(contact.ID);
@@ -120,3 +120,19 @@ var removeFromCampaignDatabase = function (contactID) {
         }
     });
 };
+
+var populateFromPreExisitingContacts = function() {
+    var existingContacts = $('div').find("[class='existing-contact']");
+    existingContacts.each(function(index, element) {
+        var children = element.children;
+        console.log(children);
+        var contact = new Object;
+        contact.Name = children[0].value;
+        contact.Number = children[1].value;
+        contact.ID = children[2].value;
+
+        addToContactList(contact);
+    });
+}
+
+$(document).ready(populateFromPreExisitingContacts);
