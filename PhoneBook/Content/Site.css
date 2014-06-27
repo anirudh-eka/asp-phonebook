@@ -636,6 +636,11 @@ tr.pager td {
     color: red;
 }
 
+#add-duplicate-confirm {
+    float:left; 
+    margin:0 7px 20px 0;
+}
+
 
 /********************
 *   Mobile Styles   *
