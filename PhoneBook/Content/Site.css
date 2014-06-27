@@ -496,6 +496,14 @@ textarea {
     color: #e80c4d;
 }
 
+.export-status {
+    background-color: yellow;
+    border: 1px solid;
+    width: auto;
+    text-align: center;
+
+}
+
 /* styles for validation helpers */
 .field-validation-error {
     color: #e80c4d;

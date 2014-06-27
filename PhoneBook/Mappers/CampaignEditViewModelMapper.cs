@@ -15,6 +15,11 @@ namespace PhoneBook.Mappers
             target.Date = source.Date;
             target.ID = source.ID;
 
+
+            IMapToNewListMapper<Contact, ContactViewModel> contactListMapper = 
+                new ContactViewModelListMapper(new ContactViewModelMapper());
+           
+            target.Contacts = contactListMapper.Map(source.Contacts.ToList());
         }
     }
 }

@@ -171,6 +171,7 @@
     <Compile Include="Controllers\CampaignController.cs" />
     <Compile Include="Mappers\CampaignEditViewModelMapper.cs" />
     <Compile Include="Mappers\CampaignFromEditViewModelMapper.cs" />
+    <Compile Include="Models\ContactWithCampaign.cs" />
     <Compile Include="ViewModels\CampaignEditViewModel.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queriers\ContactQuerier.cs" />
+    <Compile Include="ViewModels\CampaignExportModel.cs" />
     <Compile Include="ViewModels\CampaignViewModel.cs" />
     <Compile Include="ViewModels\ContactViewModel.cs" />
   </ItemGroup>
@@ -402,6 +404,7 @@
     <Content Include="Views\Campaign\Create.cshtml" />
     <Content Include="Views\Campaign\Edit.cshtml" />
     <Content Include="Views\Campaign\AddContacts.cshtml" />
+    <Content Include="Views\Campaign\Export.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -5,10 +5,14 @@
 }
 
 <h2>Campaigns</h2>
-
+<p class="export-status"> @ViewBag.ExportStatus</p>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<p>
+    @Html.ActionLink("Export Campaigns", "Export")
+</p>
+
 <table>
     <tr>
         <th>
@@ -29,7 +33,7 @@
             @Html.DisplayFor(modelItem => item.Date)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID })
+            @Html.ActionLink("Details", "AddContacts", new { id=item.ID })
         </td>
     </tr>
 }

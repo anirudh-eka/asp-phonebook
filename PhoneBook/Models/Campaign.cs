@@ -11,6 +11,6 @@ namespace PhoneBook.Models
         public string Name { get; set; }
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
-        public virtual ICollection<Contact> Contact { get; set; }
+        public virtual ICollection<Contact> Contacts { get; set; }
     }
 }

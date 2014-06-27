@@ -105,22 +105,61 @@ namespace PhoneBook.Controllers
             var contact = db.Contacts.Find(contactID);
             var campaign = db.Campaigns.Find(campaignID);
 
-            campaign.Contact.Add(contact);
+            campaign.Contacts.Add(contact);
             db.SaveChanges();
             
             return Json("Success");
         }
-        
+
         //Post: /campaign/deleteContact
         [HttpPost]
         public JsonResult DeleteContact(int contactID, int campaignID)
         {
             var campaign = db.Campaigns.Find(campaignID);
             var contact = db.Contacts.Find(contactID);
-            campaign.Contact.Remove(contact);
+            campaign.Contacts.Remove(contact);
 
             db.SaveChanges();
             return Json("Success");
+        }
+
+        //GET: /campaign/Export
+        public ActionResult Export()
+        {
+            return View();
+        }
+
+
+        [HttpPost, ActionName("Export")]
+        public ActionResult Export(CampaignExportModel campaignExportModel)
+        {
+            DateTime startDateTime = campaignExportModel.StartDateTime;
+            DateTime endDateTime = campaignExportModel.EndDateTime;
+
+            IQueryable contactWithCampaigns =
+                from contacts in db.Contacts
+                from campaign in contacts.Campaign
+                where campaign.Date >= startDateTime && campaign.Date <= endDateTime
+                select new ContactWithCampaign()
+                {
+                    Contact = contacts,
+                    Campaign = campaign
+                };
+
+            string path = @"c:\exportedCampaigns\exportedCampaign.txt";
+
+            // This text is always added, making the file longer over time
+            // if it is not deleted.
+            string headers = "Campaign Name, Campaign Date, Contact Name, Contact Phone Number" + Environment.NewLine;
+            System.IO.File.WriteAllText(path, headers);
+            foreach (ContactWithCampaign contactWithCampaign in contactWithCampaigns)
+            {
+                System.IO.File.AppendAllText(path,
+                    contactWithCampaign.Campaign.Name + "," + contactWithCampaign.Campaign.Date + "," + contactWithCampaign.Contact.Name + "," + contactWithCampaign.Contact.Number + Environment.NewLine);
+            }
+
+            ViewBag.exportStatus = "Export successful";
+            return View("Index", db.Campaigns.ToList());
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using NUnit.Framework;
 
 namespace PhoneBook.ViewModels
 {
@@ -13,5 +15,8 @@ namespace PhoneBook.ViewModels
         public DateTime Date { get; set; }
 
         public int ID { get; set; }
+
+        public List<ContactViewModel> Contacts { get; set; }
+    
     }
 }

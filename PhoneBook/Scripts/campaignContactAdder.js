@@ -1,5 +1,4 @@
 ﻿/// <reference path="../Views/Campaign/AddContacts.cshtml" />
-var campaignAttendees = {};
 $(function () {
     $("#addContactToCampaign").autocomplete({
         source: function(request, response) {
@@ -28,26 +27,20 @@ $(function () {
         minLength: 2,
         select: function (event, ui) {
             var contact = ui.item;
-            if (contact.ID in campaignAttendees && campaignAttendees[contact.ID] > 0) {
+            var contactRow = $("div").find("[contactID='" + contact.ID + "']");
+            if (contactRow.length > 0) {
                 $("#add-duplicate-confirm").dialog({
                     resizable: false,
                     height: 180,
-                    modal: true,
+                    modal: false,
                     buttons: {
-                        "Add anyways": function() {
+                        "OK": function() {
                             $(this).dialog("close");
-                            addToCampaignView(contact);
                         },
-                        Cancel: function() {
-                            $(this).dialog("close");
-                            $('#addContactToCampaign').val("");
-                            $('#addContactToCampaign').focus();
-                        }
+                        
                     }
                 });
             } else {
-                console.log("here");
-                campaignAttendees[contact.ID] = 0;
                 addToCampaignView(contact);
             }
         }
@@ -65,9 +58,6 @@ var addToCampaignView = function (contact) {
         },
         dataType: "json",
         success: function () {
-            console.log("campaign attendee: " + contact.ID + "| " + campaignAttendees[contact.ID]);
-            campaignAttendees[contact.ID] += 1;
-            console.log("-> " + campaignAttendees[contact.ID]);
             addToContactList(contact);
         },
         
@@ -86,10 +76,7 @@ var addToContactList = function (contact) {
 };
 var setUpDeleteButton = function(contactID) {
     var contactRow = $("div").find("[contactID='" + contactID + "']");
-    var newestDeleteButtonIndex = 2 + (campaignAttendees[contactID] - 1) * 2;
-    console.log("new index: " + newestDeleteButtonIndex);
-    var deleteButton = contactRow[newestDeleteButtonIndex];
-    console.log(deleteButton.className);
+    var deleteButton = contactRow[2];
     $(deleteButton).on('click', function () {
         $("#delete-confirm").dialog({
             resizable: false,
@@ -125,10 +112,6 @@ var removeFromCampaignDatabase = function (contactID) {
         dataType: "json",
         success: function () {
             contactRow.remove();
-            campaignAttendees[contactID] -= 1;
-            if (campaignAttendees <= 0) {
-                delete campaignAttendees[contactID];
-            }
         },
 
         error: function (xhr, ajaxOptions, thrownError) {
