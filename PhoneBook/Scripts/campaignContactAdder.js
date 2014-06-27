@@ -28,7 +28,7 @@ $(function () {
         minLength: 2,
         select: function (event, ui) {
             var contact = ui.item;
-            if (contact.ID in campaignAttendees) {
+            if (contact.ID in campaignAttendees && campaignAttendees[contact.ID] > 0) {
                 $("#add-duplicate-confirm").dialog({
                     resizable: false,
                     height: 180,
@@ -46,6 +46,8 @@ $(function () {
                     }
                 });
             } else {
+                console.log("here");
+                campaignAttendees[contact.ID] = 0;
                 addToCampaignView(contact);
             }
         }
@@ -63,8 +65,10 @@ var addToCampaignView = function (contact) {
         },
         dataType: "json",
         success: function () {
+            console.log("campaign attendee: " + contact.ID + "| " + campaignAttendees[contact.ID]);
+            campaignAttendees[contact.ID] += 1;
+            console.log("-> " + campaignAttendees[contact.ID]);
             addToContactList(contact);
-            campaignAttendees[contact.ID] = contact;
         },
         
         error: function (xhr, ajaxOptions, thrownError) {
@@ -82,8 +86,10 @@ var addToContactList = function (contact) {
 };
 var setUpDeleteButton = function(contactID) {
     var contactRow = $("div").find("[contactID='" + contactID + "']");
-    var deleteButton = contactRow[2];
-
+    var newestDeleteButtonIndex = 2 + (campaignAttendees[contactID] - 1) * 2;
+    console.log("new index: " + newestDeleteButtonIndex);
+    var deleteButton = contactRow[newestDeleteButtonIndex];
+    console.log(deleteButton.className);
     $(deleteButton).on('click', function () {
         $("#delete-confirm").dialog({
             resizable: false,
@@ -118,6 +124,10 @@ var removeFromCampaignDatabase = function (contactID, contactRow) {
         dataType: "json",
         success: function () {
             contactRow.remove();
+            campaignAttendees[contactID] -= 1;
+            if (campaignAttendees <= 0) {
+                delete campaignAttendees[contactID];
+            }
         },
 
         error: function (xhr, ajaxOptions, thrownError) {
