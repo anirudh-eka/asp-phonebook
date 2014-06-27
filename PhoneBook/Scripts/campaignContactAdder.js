@@ -31,7 +31,7 @@ $(function () {
             if (contact.ID in campaignAttendees) {
                 $("#add-duplicate-confirm").dialog({
                     resizable: false,
-                    height: 140,
+                    height: 180,
                     modal: true,
                     buttons: {
                         "Add anyways": function() {
@@ -87,7 +87,7 @@ var setUpDeleteButton = function(contactID) {
     $(deleteButton).on('click', function () {
         $("#delete-confirm").dialog({
             resizable: false,
-            height: 140,
+            height: 180,
             modal: true,
             buttons: {
                 "Delete": function () {
