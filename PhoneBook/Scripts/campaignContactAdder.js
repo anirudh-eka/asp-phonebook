@@ -98,7 +98,7 @@ var setUpDeleteButton = function(contactID) {
             buttons: {
                 "Delete": function () {
                     $(this).dialog("close");
-                    removeFromCampaignDatabase(contactID, contactRow);
+                    removeFromCampaignDatabase(contactID);
                 },
                 Cancel: function () {
                     $(this).dialog("close");
@@ -112,8 +112,9 @@ var prependToContactAttendees = function(contact) {
     $("<div contactId=" + contact.ID + ">").text(contact.Number).prependTo(".campaign-attendees-phonenumbers");
     $("<div class='delete-button-container' contactId=" + contact.ID + ">").html("<button class='delete-button'>X</button>").prependTo(".campaign-attendees-delete");
 };
-var removeFromCampaignDatabase = function (contactID, contactRow) {
+var removeFromCampaignDatabase = function (contactID) {
     var campaignID = $('#ID').attr('value');
+    var contactRow = $("div").find("[contactID='" + contactID + "']");
     $.ajax({
         url: "http://localhost:1147/campaign/DeleteContact",
         type: "POST",
